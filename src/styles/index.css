@@ -184,6 +184,9 @@ fieldset {
 legend {
   display: none;
 }
+main{
+  margin-left: 242px;
+}
 .material-symbols-outlined{
   font-family: 'Material Icons';
 }

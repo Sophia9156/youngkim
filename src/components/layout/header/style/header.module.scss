@@ -6,13 +6,23 @@ header{
   position: fixed;
   left: 0; top: 0;
   background-color: #fff;
+  z-index: 20;
   .headerContainer{
     width: 100%;
+    height: 100vh;
     padding: 57px 41px 0 90px;
-    .logoContainer{
-      margin-bottom: 53px;
-      img{
-        cursor: pointer;
+    &.lined{
+      box-shadow: 2px 4px 2px rgba(0, 0, 0, 0.1);
+    }
+    .topContainer{
+      .logoContainer{
+        margin-bottom: 53px;
+        img{
+          cursor: pointer;
+        }
+      }
+      .burgerContainer{
+        display: none;
       }
     }
     .navContainer{
@@ -28,6 +38,100 @@ header{
           &.active{
             color: $black;
           }
+        }
+      }
+    }
+    .adminNavContainer{
+      margin-top: 104px;
+      .adminNavList{
+        margin-bottom: 107px;
+        .adminNavItem{
+          margin-bottom: 20px;
+          &:last-child{
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  header{
+    width: 100%;
+    height: auto;
+    position: fixed;
+    left: 0; top: 0;
+    background-color: transparent;
+    .headerContainer{
+      width: 100%;
+      height: auto;
+      padding: 0;
+      .topContainer{
+        padding: 23px 22px 15px 26px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.2);
+        .logoContainer{
+          margin-bottom: 0px;
+          img{
+            cursor: pointer;
+          }
+        }
+        .burgerContainer{
+          display: block;
+          padding: 4px;
+          cursor: pointer;
+          span{
+            display: block;
+            margin-bottom: 3px;
+            width: 22px;
+            height: 2px;
+            background-color: $black;
+            opacity: 1;
+            transition: .4s;
+          }
+          &.active{
+            span{
+              &:nth-child(1){
+                transform: scaleX(0.5) rotate(25deg) translateY(5.5px);
+              }
+              &:nth-child(2){
+                opacity: 0;
+              }
+              &:nth-child(3){
+                transform: scaleX(0.5) rotate(-25deg) translateY(-5.5px);
+              }
+            }
+          }
+        }
+      }
+      .navContainer{
+        width: 100%;
+        height: calc(100vh - 61px);
+        display: none;
+        margin-top: 61px;
+        padding-top: 33px;
+        position: fixed;
+        left: 0; top: 0;
+        background-color: #fff;
+        padding-left: 30px;
+        .navList{
+          .navItem{
+            padding: 4px;
+            margin-bottom: 2px;
+            font-size: 13px;
+            line-height: 16px;
+            color: $grey;
+            cursor: pointer;
+            &.active{
+              color: $black;
+            }
+          }
+        }
+        &.active{
+          display: block;
         }
       }
     }
