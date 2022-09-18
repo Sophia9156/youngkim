@@ -6,6 +6,7 @@ export default function Button({
   black,
   grey,
   small,
+  big,
   onClick
 }) {
   return (
@@ -14,6 +15,7 @@ export default function Button({
       black={black}
       grey={grey}
       small={small}
+      big={big}
       onClick={onClick}
     >{text}</StyledButton>
   )
@@ -35,6 +37,12 @@ const StyledButton = styled.button`
   }
   ${props => props.small && css`
     width: 100px;
+  `}
+  ${props => props.big && css`
+    width 264px;
+    padding: 16px;
+    font-size: 24px;
+    line-height: 30px;
   `}
   ${props => props.black && css`
     background-color: ${({theme}) => theme.color.black};

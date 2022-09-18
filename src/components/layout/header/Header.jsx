@@ -10,7 +10,7 @@ export default function Header() {
 
   return (
     <header>
-      <div className={`${styles.headerContainer} ${pathname === '/admin' ? styles.lined : ''}`}>
+      <div className={`${styles.headerContainer} ${pathname.includes('/admin') ? styles.lined : ''}`}>
         <div className={styles.topContainer}>
           <div className={styles.logoContainer}>
             <img src="/images/logo.svg" alt="logo" 
@@ -25,7 +25,7 @@ export default function Header() {
             <span></span>
           </div>
         </div>
-        {pathname === '/admin' ? (
+        {pathname.includes('/admin') ? (
           <nav className={styles.adminNavContainer}>
             <ul className={styles.adminNavList}>
               <li className={styles.adminNavItem}>
