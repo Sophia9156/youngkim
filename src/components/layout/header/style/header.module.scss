@@ -1,0 +1,35 @@
+@import '/src/styles/common';
+
+header{
+  width: 242px;
+  height: 100vh;
+  position: fixed;
+  left: 0; top: 0;
+  background-color: #fff;
+  .headerContainer{
+    width: 100%;
+    padding: 57px 41px 0 90px;
+    .logoContainer{
+      margin-bottom: 53px;
+      img{
+        cursor: pointer;
+      }
+    }
+    .navContainer{
+      padding-left: 30px;
+      .navList{
+        .navItem{
+          padding: 4px;
+          margin-bottom: 2px;
+          font-size: 13px;
+          line-height: 16px;
+          color: $grey;
+          cursor: pointer;
+          &.active{
+            color: $black;
+          }
+        }
+      }
+    }
+  }
+}

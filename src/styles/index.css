@@ -1,26 +1,19 @@
 *{
   box-sizing: border-box;
-}
-body {
+  margin: 0;
+  padding: 0;
+  border: 0;
   line-height: 1;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400;
   font-size: 16px;
+  color: #303030;
 }
 button,
 input,
 select,
 textarea {
   cursor: pointer;
-}
-button,
-input,
-select,
-table,
-textarea {
-  border: 0;
-  margin: 0;
-  padding: 0;
 }
 html,
 body,
@@ -159,6 +152,7 @@ textarea {
 /* 아이폰 input 둥근테두리 그림자 제거 */
 input {
   -webkit-appearance: none;
+  border-radius: 0;
   -webkit-border-radius: 0;
   outline: none;
 }
@@ -172,6 +166,7 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
+  box-shadow: 0 0 0 1000px #f2f4f5 inset !important;
   -webkit-box-shadow: 0 0 0 1000px #f2f4f5 inset !important;
 }
 /* select 화살표 없애기 */
@@ -191,8 +186,4 @@ legend {
 }
 .material-symbols-outlined{
   font-family: 'Material Icons';
-}
-.error{
-  font-size: 0.8rem;
-  color: #EF284C;
 }
