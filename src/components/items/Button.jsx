@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 export default function Button({
   type,
-  text,
+  children,
   black,
   grey,
   small,
@@ -17,7 +17,7 @@ export default function Button({
       small={small}
       big={big}
       onClick={onClick}
-    >{text}</StyledButton>
+    >{children}</StyledButton>
   )
 }
 

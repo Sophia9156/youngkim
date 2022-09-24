@@ -29,14 +29,14 @@ export default function Header() {
           <nav className={styles.adminNavContainer}>
             <ul className={styles.adminNavList}>
               <li className={styles.adminNavItem}>
-                <Button text="upload" black />
+                <Button black>upload</Button>
               </li>
               <li className={styles.adminNavItem}>
-                <Button text="modify" />  
+                <Button>modify</Button>
               </li>
             </ul>
             <div className={styles.adminLogout}>
-              <Button text="log out" grey />
+              <Button grey>log out</Button>
             </div>
           </nav>
         ) : (

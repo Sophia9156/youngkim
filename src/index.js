@@ -5,13 +5,35 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ThemeProvider } from 'styled-components';
 import theme from 'styles/styledTheme';
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from "react-redux";
+import persistReducer, { rootSaga } from "./redux";
+import createSagaMiddleware from "redux-saga";
+import { createLogger } from "redux-logger";
+import { persistStore } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
+
+const sagaMiddleware = createSagaMiddleware();
+
+const logger = createLogger({});
+const store = configureStore({
+  reducer: persistReducer,
+  middleware: [sagaMiddleware, logger],
+});
+const persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+sagaMiddleware.run(rootSaga);
+
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 

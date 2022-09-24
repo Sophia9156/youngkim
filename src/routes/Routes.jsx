@@ -16,7 +16,7 @@ export default function CreateRoutes() {
       <Route path="/admin-login" element={<Login />} />
       <Route path="/admin-home" element={<AdminHome />} />
       <Route path="*" element={<Navigate replace to="/paintings" />} />
-      <Route path="/admin*" element={<Navigate replace to ="/admin-home" />} />
+      <Route path="/admin*" element={<Navigate replace to ="/admin-login" />} />
     </Routes>
   )
 }
