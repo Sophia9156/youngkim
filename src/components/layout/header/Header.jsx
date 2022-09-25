@@ -2,11 +2,16 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './style/header.module.scss';
 import Button from 'components/items/Button';
+import { useDispatch } from 'react-redux';
+import { logoutRequest } from 'redux/Login';
 
 export default function Header() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [isBurgerActive, setBurgerActive] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => dispatch(logoutRequest());
 
   return (
     <header>
@@ -26,20 +31,25 @@ export default function Header() {
           </div>
         </div>
         {pathname.includes('/admin') ? (
-          <nav className={styles.adminNavContainer}>
-            <ul className={styles.adminNavList}>
-              <li className={styles.adminNavItem}>
-                <Button black>upload</Button>
-              </li>
-              <li className={styles.adminNavItem}>
-                <Button>modify</Button>
-              </li>
-            </ul>
-            <div className={styles.adminLogout}>
-              <Button grey>log out</Button>
-            </div>
-          </nav>
-        ) : (
+          <>
+          {pathname === '/admin-login' ? (
+            <></>
+          ) : (
+            <nav className={styles.adminNavContainer}>
+              <ul className={styles.adminNavList}>
+                <li className={styles.adminNavItem}>
+                  <Button black onClick={() => navigate("/admin-upload")}>upload</Button>
+                </li>
+                <li className={styles.adminNavItem}>
+                  <Button onClick={() => navigate("/admin-modify")}>modify</Button>
+                </li>
+              </ul>
+              <div className={styles.adminLogout}>
+                <Button grey onClick={handleLogout}>log out</Button>
+              </div>
+            </nav>
+            )}
+          </>) : (
           <nav className={`${styles.navContainer} ${isBurgerActive ? styles.active : ''}`}>
             <ul className={styles.navList}>
               <li className={`${styles.navItem} ${pathname === '/paintings' && styles.active}`}

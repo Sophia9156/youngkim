@@ -33,7 +33,7 @@ const StyledButton = styled.button`
   border: 1px solid ${({theme}) => theme.color.black};
   cursor: pointer;
   &:hover{
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: ${({theme}) => theme.color.hoverWhite};
   }
   ${props => props.small && css`
     width: 100px;
@@ -48,8 +48,7 @@ const StyledButton = styled.button`
     background-color: ${({theme}) => theme.color.black};
     color: #fff;
     &:hover{
-      background-color: ${({theme}) => theme.color.black};
-      color: rgba(255, 255, 255, 0.8);
+      background-color: ${({theme}) => theme.color.hoverBlack};
     }
   `}
   ${props => props.grey && css`

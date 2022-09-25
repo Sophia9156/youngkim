@@ -10,9 +10,10 @@ export function loginRequest() {
     type: LOGIN_REQUEST,
   };
 }
-export function loginSuccess() {
+export function loginSuccess(payload) {
   return {
     type: LOGIN_SUCCESS,
+    payload
   };
 }
 export function loginFailure(error) {

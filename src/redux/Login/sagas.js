@@ -5,16 +5,16 @@ import { auth, googleProvider } from "utils/firebase/firebase";
 
 // 로그인
 function* login() {
-  yield call(() => signInWithPopup(auth, googleProvider)
-  .then((result) => {
+  try {
+    const result = yield call(() => signInWithPopup(auth, googleProvider));
     const credential = GoogleAuthProvider.credentialFromResult(result);
     const token = credential.accessToken;
-    const user = result.user;
     sessionStorage.setItem("accessToken", token);
-    actionTypes.loginSuccess(user);
-  }).catch((error) => {
-    actionTypes.loginFailure(error);
-  }));
+    yield put(actionTypes.loginSuccess(result.user.email));
+  } catch (error) {
+    yield put(actionTypes.loginFailure(error));
+  }
+  
 }
 
 // 로그아웃
