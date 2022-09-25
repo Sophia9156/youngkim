@@ -1,0 +1,31 @@
+.upload-container{
+  margin-top: 140px;
+  padding: 46px 103px 46px 58px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  .upload-image-container{
+    margin-right: 20px;
+  }
+  .upload-form-container{
+    flex: 1;
+    height: 405px;
+    .upload-form-item{
+      width: 100%;
+      margin-bottom: 18px;
+      &:last-child{
+        margin-bottom: 0px;
+      }
+      .checkbox-label{
+        margin-left: 10px;
+        font-size: 15px;
+        line-height: 19px;
+        vertical-align: middle;
+        cursor: pointer;
+      }
+      &.description{
+        height: calc(405px - 48px - 76px);
+      }
+    }
+  }
+}

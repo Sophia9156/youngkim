@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import styles from "./style/home.module.scss";
 
 export default function AdminHome() {
@@ -7,10 +7,20 @@ export default function AdminHome() {
   return (
     <main className={styles.adminHomeContainer}>
       <button className={`${styles.adminHomeBtn} ${styles.black}`}
-        onClick={() => navigate("/admin-upload")}
+        onClick={() => navigate({
+          pathname: "/admin-upload",
+          search: createSearchParams({
+            category: "painting"
+          }).toString()
+        })}
       >upload</button>
       <button className={styles.adminHomeBtn}
-        onClick={() => navigate("/admin-modify")}
+        onClick={() => navigate({
+          pathname: "/admin-modify",
+          search: createSearchParams({
+            category: "painting"
+          }).toString()
+        })}
       >modify</button>
     </main>
   )

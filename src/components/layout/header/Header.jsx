@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
 import styles from './style/header.module.scss';
 import Button from 'components/items/Button';
 import { useDispatch } from 'react-redux';
@@ -38,10 +38,26 @@ export default function Header() {
             <nav className={styles.adminNavContainer}>
               <ul className={styles.adminNavList}>
                 <li className={styles.adminNavItem}>
-                  <Button black onClick={() => navigate("/admin-upload")}>upload</Button>
+                  <Button 
+                    black={pathname.includes("/admin-upload") ? true : false} 
+                    onClick={() => navigate({
+                      pathname: "/admin-upload",
+                      search: createSearchParams({
+                        category: "painting"
+                      }).toString()
+                    })}
+                  >upload</Button>
                 </li>
                 <li className={styles.adminNavItem}>
-                  <Button onClick={() => navigate("/admin-modify")}>modify</Button>
+                  <Button 
+                    black={pathname.includes("/admin-modify") ? true : false}
+                    onClick={() => navigate({
+                      pathname: "/admin-modify",
+                      search: createSearchParams({
+                        category: "painting"
+                      }).toString()
+                    })}
+                  >modify</Button>
                 </li>
               </ul>
               <div className={styles.adminLogout}>

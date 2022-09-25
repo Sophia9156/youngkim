@@ -1,0 +1,42 @@
+@import '/src/styles/common';
+
+.admin-bar{
+  width: calc(100% - 242px);
+  padding: 85px 58px 18px;
+  background-color: #fff;
+  position: fixed;
+  right: 0; top: 0;
+  z-index: 18;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.16);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .admin-bar-category-wrap{
+    border: 1px solid $black;
+    .admin-bar-category-btn{
+      padding: 8px 20px;
+      background-color: #fff;
+      font-size: 15px;
+      line-height: 19px;
+      text-align: center;
+      &.active{
+        background-color: $black;
+        color: #fff;
+      }
+      &:hover{
+        background-color: $hoverWhite;
+      }
+    }
+  }
+  .admin-bar-btn-list{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .admin-bar-btn-item{
+      margin-left: 21px;
+      &:first-child{
+        margin-left: 0;
+      }
+    }
+  }
+}
