@@ -1,9 +1,5 @@
 {
   "projects": {
-    "default": "youngkim-54db8",
-    "hosting": "youngkim-54db8",
-    "staging": "youngkim-54db8"
-  },
-  "targets": {},
-  "etags": {}
+    "default": "youngkim-54db8"
+  }
 }
