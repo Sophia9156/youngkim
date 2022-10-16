@@ -1,0 +1,186 @@
+.gallery-container-list{
+  width: 100%;
+  padding-left: 124px;
+  padding-bottom: 218px;
+  max-width: 712px;
+  .intro-container{
+    padding-top: 80px;
+    .intro-title{
+      margin-bottom: 32px;
+      font-size: 24px;
+      line-height: 30px;
+    }
+    .intro-image{
+      margin-bottom: 8px;
+      img{
+        width: 100%;
+      }
+    }
+    .intro-description{
+      text-align: justify;
+      font-size: 13px;
+      line-height: 19px;
+      word-break: keep-all;
+    }
+  }
+  .paintings-list{
+    padding-top: 108px;
+    .paintings-list-item{
+      margin-bottom: 108px;
+      &:last-child{
+        margin-bottom: 0px;
+      }
+      .painting-image{
+        margin-bottom: 8px;
+        img{
+          width: 100%;
+        }
+      }
+      .painting-title{
+        margin-bottom: 10px;
+        font-size: 13px;
+        line-height: 16px;
+      }
+      .painting-description{
+        font-size: 11px;
+        line-height: 14px;
+      }
+    }
+  }
+  .photographs-list{
+    padding-top: 80px;
+    .photographs-list-item{
+      margin-bottom: 98px;
+      &:last-child{
+        margin-bottom: 0;
+      }
+      .photograph-image{
+        img{
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.gallery-container-grid{
+  width: 100%;
+  padding-left: 124px;
+  padding-bottom: 152px;
+  max-width: 982px;
+  .drawings-list{
+    padding-top: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    .drawings-list-item{
+      width: calc((100% - 100px) / 3);
+      margin-right: 50px;
+      margin-bottom: 66px;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+      .drawing-image{
+        img{
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media all and (max-width: 480px) {
+  .gallery-container-list{
+    width: 100vw;
+    padding-left: 0;
+    padding-bottom: 80px;
+    max-width: 712px;
+    .intro-container{
+      padding-top: 61px;
+      .intro-title{
+        width: calc(100% - 62px);
+        margin: 20px auto 8px;
+        font-size: 15px;
+        line-height: 19px;
+      }
+      .intro-image{
+        margin-bottom: 20px;
+        img{
+          width: 100%;
+        }
+      }
+      .intro-description{
+        width: calc(100% - 62px);
+        margin: 0 auto;
+        font-size: 9px;
+        line-height: 11px;
+        text-align: justify;
+        word-break: keep-all;
+      }
+    }
+    .paintings-list{
+      padding-top: 80px;
+      width: calc(100% - 62px);
+      margin: 0 auto;
+      .paintings-list-item{
+        margin-bottom: 108px;
+        &:last-child{
+          margin-bottom: 0px;
+        }
+        .painting-image{
+          margin-bottom: 8px;
+          img{
+            width: 100%;
+          }
+        }
+        .painting-title{
+          margin-bottom: 6px;
+          font-size: 9px;
+          line-height: 11px;
+        }
+        .painting-description{
+          font-size: 9px;
+          line-height: 11px;
+          text-align: justify;
+          word-break: keep-all;
+        }
+      }
+    }
+    .photographs-list{
+      padding-top: 80px;
+      width: calc(100% - 62px);
+      margin: 0 auto;
+      .photographs-list-item{
+        margin-bottom: 56px;
+        &:last-child{
+          margin-bottom: 0;
+        }
+        .photograph-image{
+          img{
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+  
+  .gallery-container-grid{
+    width: 100vw;
+    padding-left: 0px;
+    padding-bottom: 80px;
+    width: calc(100% - 62px);
+    margin: 0 auto;
+    max-width: 982px;
+    .drawings-list{
+      padding-top: 80px;
+      display: block;
+      .drawings-list-item{
+        width: 100%;
+        margin-right: 0px;
+        margin-bottom: 56px;
+      }
+    }
+  }  
+}

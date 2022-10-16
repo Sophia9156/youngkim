@@ -58,7 +58,7 @@ header{
 
 @media screen and (max-width: 767px) {
   header{
-    width: 100%;
+    width: 100vw;
     height: auto;
     position: fixed;
     left: 0; top: 0;
@@ -72,7 +72,7 @@ header{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.5);
         .logoContainer{
           margin-bottom: 0px;
           img{

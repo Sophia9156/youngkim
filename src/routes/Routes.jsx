@@ -23,6 +23,11 @@ export default function CreateRoutes() {
     }
   }, [isLoggingIn, navigate, pathname]);
 
+  // 페이지 이동 시 상단 이동
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return (
     <Routes>
       <Route path="/paintings" element={<Paintings />} />

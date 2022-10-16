@@ -1,8 +1,9 @@
+import TopBtn from "components/items/TopBtn";
 import Footer from "components/layout/footer/Footer";
+import Header from "components/layout/header/Header";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter as Router } from "react-router-dom";
-import Header from "./components/layout/header/Header";
-import CreateRoutes from "./routes/Routes";
+import CreateRoutes from "routes/Routes";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Header />
         <CreateRoutes />
         <Footer />
+        <TopBtn />
       </Router>
     </div>
   );

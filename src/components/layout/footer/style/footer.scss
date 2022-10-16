@@ -5,3 +5,8 @@ footer{
   font-size: 11px;
   line-height: 14px;
 }
+@media all and (max-width: 480px) {
+  footer{
+    padding: 20px 20px 128px;
+  }
+}

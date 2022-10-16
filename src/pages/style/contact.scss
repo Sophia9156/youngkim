@@ -1,0 +1,18 @@
+.contact-container{
+  width: 100%;
+  max-width: 794px;
+  padding: 128px 0 162px 124px; 
+  img{
+    width: 100%;
+  }
+}
+
+@media all and (max-width: 480px) {
+  .contact-container{
+    width: 100vw;
+    padding: 200px 24px 162px 24px; 
+    img{
+      width: 100%;
+    }
+  }
+}

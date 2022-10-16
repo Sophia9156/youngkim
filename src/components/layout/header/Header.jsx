@@ -69,16 +69,28 @@ export default function Header() {
           <nav className={`${styles.navContainer} ${isBurgerActive ? styles.active : ''}`}>
             <ul className={styles.navList}>
               <li className={`${styles.navItem} ${pathname === '/paintings' && styles.active}`}
-                onClick={() => navigate('/paintings')}
+                onClick={() => {
+                  navigate('/paintings');
+                  setBurgerActive(false);
+                }}
               >paintings</li>
               <li className={`${styles.navItem} ${pathname === '/photographs' && styles.active}`}
-                onClick={() => navigate('/photographs')}
+                onClick={() => {
+                  navigate('/photographs');
+                  setBurgerActive(false);
+                }}
               >photographs</li>
               <li className={`${styles.navItem} ${pathname === '/drawings' && styles.active}`}
-                onClick={() => navigate('/drawings')}
+                onClick={() => {
+                  navigate('/drawings');
+                  setBurgerActive(false);
+                }}
               >drawings</li>
               <li className={`${styles.navItem} ${pathname === '/contact' && styles.active}`}
-                onClick={() => navigate('/contact')}
+                onClick={() => {
+                  navigate('/contact');
+                  setBurgerActive(false);
+                }}
               >contact</li>
             </ul>
           </nav>
