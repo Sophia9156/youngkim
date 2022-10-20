@@ -9,11 +9,10 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { ref } from "firebase/storage";
 import { storage } from "utils/firebase/firebase";
-import useUploadToStorage from "hooks/useUploadToStorage";
+import { uploadToStorage } from "utils/firebase/storage";
 
 export default function Upload() {
   const [searchParams] = useSearchParams();
-  const [imageURL, uploadToStorage] = useUploadToStorage();
   const categoryParam = searchParams.get("category");
   const [category, setCategory] = useState("painting");
   const [file, setFile] = useState(null);
@@ -33,13 +32,17 @@ export default function Upload() {
       image: Yup.mixed().required(),
       isIntro: Yup.boolean().required()
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       toast.dismiss();
       toast.loading("업로드 요청 중입니다.");
       switch (category) {
-        case "painting": 
-          uploadToStorage(ref(storage, `paintings/${file.name}`), file);
-          console.log(imageURL);
+        case "painting":
+          try {
+            const imageURL = await uploadToStorage(ref(storage, `paintings/${file.name}`), file);
+            console.log(imageURL);
+          } catch (error) {
+            console.log(error);
+          }
           break;
         case "photograph":
           console.log("photograph");
