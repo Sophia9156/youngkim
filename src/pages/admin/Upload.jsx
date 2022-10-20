@@ -7,12 +7,16 @@ import DragDropFileUploader from "components/items/DragDropFileUploader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { writeData } from "utils/apis/database";
+import { ref } from "firebase/storage";
+import { storage } from "utils/firebase/firebase";
+import useUploadToStorage from "hooks/useUploadToStorage";
 
 export default function Upload() {
   const [searchParams] = useSearchParams();
+  const [imageURL, uploadToStorage] = useUploadToStorage();
   const categoryParam = searchParams.get("category");
   const [category, setCategory] = useState("painting");
+  const [file, setFile] = useState(null);
 
   useEffect(() => searchParams.has("category") && setCategory(categoryParam), [categoryParam, searchParams]);
 
@@ -32,26 +36,39 @@ export default function Upload() {
     onSubmit: (values) => {
       toast.dismiss();
       toast.loading("업로드 요청 중입니다.");
-      writeData(categoryParam, values['title'], values['description'], values['isIntro'], values["image"], 2);
+      switch (category) {
+        case "painting": 
+          uploadToStorage(ref(storage, `paintings/${file.name}`), file);
+          console.log(imageURL);
+          break;
+        case "photograph":
+          console.log("photograph");
+          break;
+        case "drawing":
+          console.log("drawing");
+          break;
+        case "contact":
+          console.log("contact");
+          break;
+        default: console.log("업로드 카테고리 없음");
+      }
       toast.dismiss();
       toast.success("업로드를 성공적으로 마쳤습니다.");
     }
   });
 
-  const fileChange = (file) => {
-
-  }
+  const fileChange = (file) => setFile(file);
 
   return (
     <main>
       <AdminBar formik={formik} />
-      {category === 'painting' && (
-        <div className="upload-container">
-          <div className="upload-image-container">
-            <DragDropFileUploader id="painting" fileTypes={["JPG", "JPEG", "PNG", "GIF"]} 
-              onChange={file => console.log(file)}
-            />
-          </div>
+      <div className="upload-container">
+        <div className="upload-image-container">
+          <DragDropFileUploader id="painting" fileTypes={["JPG", "JPEG", "PNG", "GIF"]} 
+            onChange={fileChange}
+          />
+        </div>
+        {category === 'painting' && (
           <ul className="upload-form-container">
             <li className="upload-form-item">
               <Checkbox 
@@ -76,26 +93,8 @@ export default function Upload() {
               ></textarea>
             </li>
           </ul>
-        </div>
-      )}
-      {category === 'photograph' && (
-        <div className="upload-container">
-          <div className="upload-image-container">
-            <DragDropFileUploader id="painting" fileTypes={["JPG", "JPEG", "PNG", "GIF"]} 
-              onChange={file => console.log(file)}
-            />
-          </div>
-        </div>
-      )}
-      {category === 'drawing' && (
-        <div className="upload-container">
-          <div className="upload-image-container">
-            <DragDropFileUploader id="painting" fileTypes={["JPG", "JPEG", "PNG", "GIF"]} 
-              onChange={file => console.log(file)}
-            />
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </main>
   )
 }

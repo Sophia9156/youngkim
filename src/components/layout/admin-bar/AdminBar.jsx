@@ -20,6 +20,9 @@ export default function AdminBar({formik}) {
         <button type="button" className={`admin-bar-category-btn ${categoryParam === 'drawing' ? 'active' : ''}`}
           onClick={handleChangeCategory}
         >drawing</button>
+        <button type="button" className={`admin-bar-category-btn ${categoryParam === 'contact' ? 'active' : ''}`}
+          onClick={handleChangeCategory}
+        >contact</button>
       </div>
       <ul className="admin-bar-btn-list">
         <li className="admin-bar-btn-item">
@@ -27,7 +30,7 @@ export default function AdminBar({formik}) {
         </li>
         <li className="admin-bar-btn-item">
           <Button type="button" grey
-            onClick={formik.handleSubmit}
+            onClick={() => formik.handleSubmit()}
           >업로드</Button>
         </li>
       </ul>
