@@ -38,26 +38,36 @@ export default function Paintings() {
   return (
     <main>
       <div className="gallery-container-list">
-        {/* <div className="intro-container">
+        <div className="intro-container">
           {matchMedia("all and (max-width: 480px)").matches ? (
             <>
-              <figure className="intro-image">
-                <img src={intro.image} alt="intro" />
-              </figure>
-              <h4 className="intro-title">{intro.title}</h4>
+              {intro.image !== undefined && intro.image !== null && intro.image !== "" && (
+                <figure className="intro-image">
+                  <img src={intro.image} alt="intro" />
+                </figure>
+              )}
+              {intro.title !== undefined && intro.title !== null && intro.title !== "" && (
+                <h4 className="intro-title">{intro.title}</h4>
+              )}
             </>
           ) : (
             <>
-              <h4 className="intro-title">{intro.title}</h4>
-              <figure className="intro-image">
-                <img src={intro.image} alt="intro" />
-              </figure>
+              {intro.title !== undefined && intro.title !== null && intro.title !== "" && (
+                <h4 className="intro-title">{intro.title}</h4>
+              )}
+              {intro.image !== undefined && intro.image !== null && intro.image !== "" && (
+                <figure className="intro-image">
+                  <img src={intro.image} alt="intro" />
+                </figure>
+              )}
             </>
           )}
-          <p className="intro-description">
-            {intro.description}
-          </p>
-        </div> */}
+          {intro.description !== undefined && intro.description !== null && intro.description !== "" && (
+            <p className="intro-description">
+              {intro.description}
+            </p>
+          )}
+        </div>
         <ul className="paintings-list">
           {paintings.map(painting => (
             <li key={painting.id} className="paintings-list-item">
