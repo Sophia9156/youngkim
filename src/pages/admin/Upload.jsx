@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./style/upload.scss";
 import AdminBar from "components/layout/admin-bar/AdminBar";
 import Checkbox from "components/items/Checkbox";
@@ -7,15 +7,16 @@ import DragDropFileUploader from "components/items/DragDropFileUploader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { ref } from "firebase/storage";
-import { storage } from "utils/firebase/firebase";
 import { uploadToStorage } from "utils/firebase/storage";
+import { writeData } from "utils/firebase/database";
 
 export default function Upload() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get("category");
   const [category, setCategory] = useState("painting");
   const [file, setFile] = useState(null);
+  const [isIntro, setIntro] = useState(false);
 
   useEffect(() => searchParams.has("category") && setCategory(categoryParam), [categoryParam, searchParams]);
 
@@ -24,24 +25,60 @@ export default function Upload() {
       title: "",
       description: "",
       image: "imageUrl",
-      isIntro: false,
     },
     validationSchema: Yup.object({
-      title: Yup.string().max(255).required("필수 항목입니다."),
+      title: isIntro ? Yup.string().max(255) : Yup.string().max(255).required("필수 항목입니다."),
       description: Yup.string(),
-      image: Yup.mixed().required(),
-      isIntro: Yup.boolean().required()
+      image: Yup.mixed().required()
     }),
     onSubmit: async (values) => {
       toast.dismiss();
       toast.loading("업로드 요청 중입니다.");
+      const timestamp = new Date().valueOf();
+
       switch (category) {
         case "painting":
-          try {
-            const imageURL = await uploadToStorage(ref(storage, `paintings/${file.name}`), file);
-            console.log(imageURL);
-          } catch (error) {
-            console.log(error);
+          if(isIntro) {
+            try {
+              if(file !== null) {
+                const imageURL = await uploadToStorage(`intro/${file.name}`, file);
+                await writeData('intro/', {
+                  title: values["title"],
+                  description: values["description"],
+                  image: imageURL
+                });
+              } else {
+                await writeData('intro/', {
+                  title: values["title"],
+                  description: values["description"],
+                  image: ""
+                });
+              }
+              toast.dismiss();
+              toast.success("업로드를 성공적으로 마쳤습니다.");
+              navigate("/admin-home");
+            } catch (error) {
+              toast.dismiss();
+              toast.error("다시 로그인 해주세요.");
+              navigate("/admin-login");
+            }
+          } else {
+            try {
+              const imageURL = await uploadToStorage(`paintings/${timestamp}/${file.name}`, file);
+              await writeData('paintings/' + timestamp, {
+                id: timestamp,
+                title: values["title"],
+                description: values["description"],
+                image: imageURL
+              });
+              toast.dismiss();
+              toast.success("업로드를 성공적으로 마쳤습니다.");
+              navigate("/admin-home");
+            } catch (error) {
+              toast.dismiss();
+              toast.error("다시 로그인 해주세요.");
+              navigate("/admin-login");
+            }
           }
           break;
         case "photograph":
@@ -55,8 +92,6 @@ export default function Upload() {
           break;
         default: console.log("업로드 카테고리 없음");
       }
-      toast.dismiss();
-      toast.success("업로드를 성공적으로 마쳤습니다.");
     }
   });
 
@@ -77,20 +112,20 @@ export default function Upload() {
               <Checkbox 
                 id="isIntro" 
                 name="isIntro"
-                onChange={e => formik.handleChange(e.target.checked)}
+                onChange={e => setIntro(e.target.checked)}
               />
               <label className="checkbox-label" htmlFor="isIntro">인트로로 설정</label>
             </li>
             <li className="upload-form-item">
               <input type="text" name="title" id="title" required
-                placeholder="작품명 입력 (필수 입력)" 
+                placeholder={isIntro ? "인트로 제목 입력" : "작품명 입력 (필수 입력)"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
             </li>
             <li className="upload-form-item description">
               <textarea name="description" id="description"
-                placeholder="작품설명 입력"
+                placeholder={isIntro ? "인트로 내용 입력" : "작품설명 입력"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               ></textarea>

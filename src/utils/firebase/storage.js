@@ -1,8 +1,9 @@
-import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { Storage } from "./firebase";
 
-export const uploadToStorage = (ref, file) => {
+export const uploadToStorage = (pathname, file) => {
   return new Promise((resolve, reject) => {
-    const uploadTask = uploadBytesResumable(ref, file);
+    const uploadTask = uploadBytesResumable(ref(Storage, pathname), file);
 
     uploadTask.on('state_changed',
       (snapshot) => {

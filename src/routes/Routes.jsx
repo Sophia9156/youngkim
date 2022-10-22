@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import Contact from "pages/Contact";
-import Drawings from "pages/Drawings";
-import Paintings from "pages/Paintings";
-import Photographs from "pages/Photographs";
+import { useSelector } from "react-redux";
+import Contact from "pages/gallery/Contact";
+import Drawings from "pages/gallery/Drawings";
+import Paintings from "pages/gallery/Paintings";
+import Photographs from "pages/gallery/Photographs";
 import Login from "pages/admin/Login";
 import AdminHome from "pages/admin/AdminHome";
-import { useSelector } from "react-redux";
 import Upload from "pages/admin/Upload";
 import Modify from "pages/admin/Modify";
+import Home from "pages/Home";
 
 export default function CreateRoutes() {
   const { pathname } = useLocation();
@@ -16,7 +17,7 @@ export default function CreateRoutes() {
   const { isLoggingIn } = useSelector(state => state.login);
 
   useEffect(() => {
-    if(pathname.includes("/admin")) {
+    if (pathname.includes("/admin")) {
       if(!isLoggingIn) {
         navigate("/admin-login");
       }
@@ -30,16 +31,18 @@ export default function CreateRoutes() {
 
   return (
     <Routes>
-      <Route path="/paintings" element={<Paintings />} />
-      <Route path="/photographs" element={<Photographs />} />
-      <Route path="/drawings" element={<Drawings />} />
-      <Route path="/contact" element={<Contact />} />
+      <Route path="/" element={<Home />}>
+        <Route path="/paintings" element={<Paintings />} />
+        <Route path="/photographs" element={<Photographs />} />
+        <Route path="/drawings" element={<Drawings />} />
+        <Route path="/contact" element={<Contact />} />
+      </Route>
       <Route path="/admin-login" element={<Login />} />
       <Route path="/admin-home" element={<AdminHome />} />
       <Route path="/admin-upload" element={<Upload />} />
       <Route path="/admin-modify" element={<Modify />} />
       <Route path="*" element={<Navigate replace to="/paintings" />} />
-      <Route path="/admin*" element={<Navigate replace to ="/admin-login" />} />
+      <Route path="/admin" element={<Navigate replace to="/admin-login" />} />
     </Routes>
   )
 }

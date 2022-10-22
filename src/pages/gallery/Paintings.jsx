@@ -1,30 +1,36 @@
-import json from "../data.json";
 import "./style/gallery.scss";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { paintingsListInit } from "redux/List";
 
 export default function Paintings() {
-  const [intro, setIntro] = useState({});
-  const [paintings, setPaintings] = useState([]);
+  const dispatch = useDispatch();
+  const { loading, intro, paintings } = useSelector(state => state.list);
   const [isCaptionOpen, setCaptionOpen] = useState([]);
-
+  
   useEffect(() => {
-    setIntro(json.intro);
-    setPaintings(json.paintings);
-    let arr = [];
-    json.paintings.forEach(painting => {
-      arr.push({id: painting.id, isOpen: false});
-    });
-    setCaptionOpen(arr);
-  }, []);
+    dispatch(paintingsListInit());
+  }, [dispatch]);
+
+  // description 표시 토글
+  useEffect(() => {
+    if(paintings.length > 0) {
+      let arr = [];
+      paintings.forEach(painting => {
+        arr.push({id: painting.id, isOpen: false});
+      });
+      setCaptionOpen(arr);
+    }
+  }, [loading, paintings]);
 
   const handleClick = (id) => {
     let arr = [];
     if(isCaptionOpen.find(el => el.id === id).isOpen === true) {
-      json.paintings.forEach(painting => {
+      paintings.forEach(painting => {
         arr.push({id: painting.id, isOpen: false});
       })
     } else {
-      json.paintings.forEach(painting => {
+      paintings.forEach(painting => {
         if(painting.id === id) {
           arr.push({id: painting.id, isOpen: true});
         } else {
@@ -69,7 +75,7 @@ export default function Paintings() {
           )}
         </div>
         <ul className="paintings-list">
-          {paintings.map(painting => (
+          {paintings.length > 0 && isCaptionOpen.length > 0 && paintings.map(painting => (
             <li key={painting.id} className="paintings-list-item">
               <figure className="painting-image"
                 onClick={() => handleClick(painting.id)}

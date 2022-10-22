@@ -1,13 +1,13 @@
 import * as actionTypes from './actions';
 
-const initiaState = {
+const initialState = {
   loading: false,
   error: null,
   isLoggingIn: null,
   user: null,
 };
 
-export default function login(state = initiaState, action) {
+export default function login(state = initialState, action) {
   switch (action.type) {
     case actionTypes.LOGIN_REQUEST:
       return {

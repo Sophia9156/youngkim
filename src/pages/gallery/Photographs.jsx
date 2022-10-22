@@ -1,4 +1,4 @@
-import json from "../data.json";
+import json from "../../data.json";
 import "./style/gallery.scss";
 import { useEffect, useState } from "react";
 
