@@ -17,6 +17,7 @@ export default function Upload() {
   const [category, setCategory] = useState("painting");
   const [file, setFile] = useState(null);
   const [isIntro, setIntro] = useState(false);
+  const [isUploading, setUploading] = useState(false);
 
   useEffect(() => searchParams.has("category") && setCategory(categoryParam), [categoryParam, searchParams]);
 
@@ -27,11 +28,12 @@ export default function Upload() {
       image: "imageUrl",
     },
     validationSchema: Yup.object({
-      title: isIntro ? Yup.string().max(255) : Yup.string().max(255).required("필수 항목입니다."),
+      title: category === "painting" ? Yup.string().max(255).required("필수 항목입니다.") : Yup.string().max(255),
       description: Yup.string(),
       image: Yup.mixed().required()
     }),
     onSubmit: async (values) => {
+      setUploading(true);
       toast.dismiss();
       toast.loading("업로드 요청 중입니다.");
       const timestamp = new Date().valueOf();
@@ -43,12 +45,14 @@ export default function Upload() {
               if(file !== null) {
                 const imageURL = await uploadToStorage(`intro/${file.name}`, file);
                 await writeData('intro/', {
+                  id: timestamp,
                   title: values["title"],
                   description: values["description"],
                   image: imageURL
                 });
               } else {
                 await writeData('intro/', {
+                  id: timestamp,
                   title: values["title"],
                   description: values["description"],
                   image: ""
@@ -57,10 +61,12 @@ export default function Upload() {
               toast.dismiss();
               toast.success("업로드를 성공적으로 마쳤습니다.");
               navigate("/admin-home");
+              setUploading(false);
             } catch (error) {
               toast.dismiss();
               toast.error("다시 로그인 해주세요.");
               navigate("/admin-login");
+              setUploading(false);
             }
           } else {
             try {
@@ -74,23 +80,70 @@ export default function Upload() {
               toast.dismiss();
               toast.success("업로드를 성공적으로 마쳤습니다.");
               navigate("/admin-home");
+              setUploading(false);
             } catch (error) {
               toast.dismiss();
               toast.error("다시 로그인 해주세요.");
               navigate("/admin-login");
+              setUploading(false);
             }
           }
           break;
         case "photograph":
-          console.log("photograph");
+          try {
+            const imageURL = await uploadToStorage(`photographs/${timestamp}/${file.name}`, file);
+            await writeData('photographs/' + timestamp, {
+              id: timestamp,
+              image: imageURL
+            });
+            toast.dismiss();
+            toast.success("업로드를 성공적으로 마쳤습니다.");
+            navigate("/admin-home");
+            setUploading(false);
+          } catch (error) {
+            toast.dismiss();
+            toast.error("다시 로그인 해주세요.");
+            navigate("/admin-login");
+            setUploading(false);
+          }
           break;
         case "drawing":
-          console.log("drawing");
+          try {
+            const imageURL = await uploadToStorage(`drawings/${timestamp}/${file.name}`, file);
+            await writeData('drawings/' + timestamp, {
+              id: timestamp,
+              image: imageURL
+            });
+            toast.dismiss();
+            toast.success("업로드를 성공적으로 마쳤습니다.");
+            navigate("/admin-home");
+            setUploading(false);
+          } catch (error) {
+            toast.dismiss();
+            toast.error("다시 로그인 해주세요.");
+            navigate("/admin-login");
+            setUploading(false);
+          }
           break;
         case "contact":
-          console.log("contact");
+          try {
+            const imageURL = await uploadToStorage(`contact/${file.name}`, file);
+            await writeData('contact/', {
+              id: timestamp,
+              image: imageURL
+            });
+            toast.dismiss();
+            toast.success("업로드를 성공적으로 마쳤습니다.");
+            navigate("/admin-home");
+            setUploading(false);
+          } catch (error) {
+            toast.dismiss();
+            toast.error("다시 로그인 해주세요.");
+            navigate("/admin-login");
+            setUploading(false);
+          }
           break;
-        default: console.log("업로드 카테고리 없음");
+        default: console.log("No Category");
       }
     }
   });
@@ -99,14 +152,14 @@ export default function Upload() {
 
   return (
     <main>
-      <AdminBar formik={formik} />
+      <AdminBar formik={formik} isUploading={isUploading} />
       <div className="upload-container">
         <div className="upload-image-container">
           <DragDropFileUploader id="painting" fileTypes={["JPG", "JPEG", "PNG", "GIF"]} 
             onChange={fileChange}
           />
         </div>
-        {category === 'painting' && (
+        {category === "painting" && (
           <ul className="upload-form-container">
             <li className="upload-form-item">
               <Checkbox 

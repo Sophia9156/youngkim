@@ -25,4 +25,4 @@ yarn-error.log*
 
 #firebase
 database.rules.json
-.rules
+storage.rules

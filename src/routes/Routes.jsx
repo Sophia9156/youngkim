@@ -9,7 +9,6 @@ import Login from "pages/admin/Login";
 import AdminHome from "pages/admin/AdminHome";
 import Upload from "pages/admin/Upload";
 import Modify from "pages/admin/Modify";
-import Home from "pages/Home";
 
 export default function CreateRoutes() {
   const { pathname } = useLocation();
@@ -31,12 +30,10 @@ export default function CreateRoutes() {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />}>
-        <Route path="/paintings" element={<Paintings />} />
-        <Route path="/photographs" element={<Photographs />} />
-        <Route path="/drawings" element={<Drawings />} />
-        <Route path="/contact" element={<Contact />} />
-      </Route>
+      <Route path="/paintings" element={<Paintings />} />
+      <Route path="/photographs" element={<Photographs />} />
+      <Route path="/drawings" element={<Drawings />} />
+      <Route path="/contact" element={<Contact />} />
       <Route path="/admin-login" element={<Login />} />
       <Route path="/admin-home" element={<AdminHome />} />
       <Route path="/admin-upload" element={<Upload />} />

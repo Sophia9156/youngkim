@@ -19,12 +19,15 @@
       font-size: 15px;
       line-height: 19px;
       text-align: center;
+      &:hover{
+        background-color: $hoverWhite;
+      }
       &.active{
         background-color: $black;
         color: #fff;
-      }
-      &:hover{
-        background-color: $hoverWhite;
+        &:hover{
+          background-color: $black;
+        }
       }
     }
   }

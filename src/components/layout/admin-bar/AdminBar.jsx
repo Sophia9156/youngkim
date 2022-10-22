@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import "./style/adminbar.scss";
 import Button from "components/items/Button";
 
-export default function AdminBar({formik}) {
+export default function AdminBar({formik, isUploading}) {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
 
@@ -30,7 +30,7 @@ export default function AdminBar({formik}) {
         </li>
         <li className="admin-bar-btn-item">
           <Button type="button" grey
-            onClick={() => formik.handleSubmit()}
+            onClick={() => isUploading === false && formik.handleSubmit()}
           >업로드</Button>
         </li>
       </ul>
