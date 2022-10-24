@@ -39,7 +39,7 @@ export default function Header() {
               <ul className={styles.adminNavList}>
                 <li className={styles.adminNavItem}>
                   <Button 
-                    black={pathname.includes("/admin-upload") ? true : false} 
+                    color={pathname.includes("/admin-upload") ? "black" : "default"}
                     onClick={() => navigate({
                       pathname: "/admin-upload",
                       search: createSearchParams({
@@ -50,7 +50,7 @@ export default function Header() {
                 </li>
                 <li className={styles.adminNavItem}>
                   <Button 
-                    black={pathname.includes("/admin-modify") ? true : false}
+                    color={pathname.includes("/admin-modify") ? "black" : "default"}
                     onClick={() => navigate({
                       pathname: "/admin-modify",
                       search: createSearchParams({
@@ -61,7 +61,7 @@ export default function Header() {
                 </li>
               </ul>
               <div className={styles.adminLogout}>
-                <Button grey onClick={handleLogout}>log out</Button>
+                <Button color="grey" onClick={handleLogout}>log out</Button>
               </div>
             </nav>
             )}

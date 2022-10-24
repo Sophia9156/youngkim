@@ -27,7 +27,7 @@ export default function Login() {
 
   return (
     <main className={styles.loginContainer}>
-      <Button black big onClick={handleLogin}>로그인</Button>
+      <Button color="black" size="big" onClick={handleLogin}>로그인</Button>
     </main>
   )
 }

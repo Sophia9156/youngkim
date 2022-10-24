@@ -1,8 +1,10 @@
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import "./style/adminbar.scss";
 import Button from "components/items/Button";
 
-export default function AdminBar({formik, isUploading}) {
+export default function AdminBar({onSubmit, isUploading}) {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
 
@@ -26,13 +28,23 @@ export default function AdminBar({formik, isUploading}) {
       </div>
       <ul className="admin-bar-btn-list">
         <li className="admin-bar-btn-item">
-          <Button type="button">취소</Button>
+          <Button type="button"
+            onClick={() => navigate("/admin-home")}
+          >취소</Button>
         </li>
-        <li className="admin-bar-btn-item">
-          <Button type="button" grey
-            onClick={() => isUploading === false && formik.handleSubmit()}
-          >업로드</Button>
-        </li>
+        {pathname === "/admin-upload" ? (
+          <li className="admin-bar-btn-item">
+            <Button type="button" color="grey"
+              onClick={() => isUploading === false && onSubmit()}
+            >업로드</Button>
+          </li>
+        ) : (
+          <li className="admin-bar-btn-item">
+            <Button type="button" color="grey"
+              onClick={() => isUploading === false && onSubmit()}
+            >선택삭제</Button>
+          </li>
+        )}
       </ul>
     </div>
   )

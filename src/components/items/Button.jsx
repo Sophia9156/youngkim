@@ -3,19 +3,15 @@ import styled, { css } from "styled-components";
 export default function Button({
   type,
   children,
-  black,
-  grey,
-  small,
-  big,
+  color,
+  size,
   onClick
 }) {
   return (
     <StyledButton
       type={type}
-      black={black}
-      grey={grey}
-      small={small}
-      big={big}
+      color={color}
+      size={size}
       onClick={onClick}
     >{children}</StyledButton>
   )
@@ -35,23 +31,23 @@ const StyledButton = styled.button`
   &:hover{
     background-color: ${({theme}) => theme.color.hoverWhite};
   }
-  ${props => props.small && css`
+  ${props => props.size === "small" && css`
     width: 100px;
   `}
-  ${props => props.big && css`
+  ${props => props.size === "big" && css`
     width 264px;
     padding: 16px;
     font-size: 24px;
     line-height: 30px;
   `}
-  ${props => props.black && css`
+  ${props => props.color === "black" && css`
     background-color: ${({theme}) => theme.color.black};
     color: #fff;
     &:hover{
       background-color: ${({theme}) => theme.color.hoverBlack};
     }
   `}
-  ${props => props.grey && css`
+  ${props => props.color === "grey" && css`
     background-color: ${({theme}) => theme.color.grey};
     border: 1px solid ${({theme}) => theme.color.grey};
     color: #fff;

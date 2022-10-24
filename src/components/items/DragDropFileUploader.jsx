@@ -59,7 +59,7 @@ export default function DragDropFileUploader({
 
 const Container = styled.div`
   width: 288px;
-  height: 405px;
+  height: 100%;
 `;
 
 const DisplayContainer = styled.div`

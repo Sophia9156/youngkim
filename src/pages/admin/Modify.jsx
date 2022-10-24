@@ -13,17 +13,17 @@ export default function Modify() {
   return (
     <main>
       <AdminBar />
-      {category === 'painting' && (
+      {category === "painting" && (
         <div className="modify-container">
           painting
         </div>
       )}
-      {category === 'photograph' && (
+      {category === "photograph" && (
         <div className="modify-container">
           photograph
         </div>
       )}
-      {category === 'drawing' && (
+      {category === "drawing" && (
         <div className="modify-container">
           drawing
         </div>

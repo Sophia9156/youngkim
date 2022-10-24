@@ -216,6 +216,14 @@ textarea:focus {
 main{
   margin-left: 242px;
 }
+.error-message{
+  margin: -8px 0 12px;
+  padding-left: 10px;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: #EF284C;
+}
 @media all and (max-width: 480px) {
   main{
     margin-left: 0;
