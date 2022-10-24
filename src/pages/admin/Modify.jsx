@@ -20,6 +20,9 @@ export default function Modify() {
   const [isConfirmedDelete, setConfirmedDelete] = useState(false);
   const [checkItems, setCheckItems] = useState([]);
   const [isDeleting, setDeleting] = useState(false);
+  const [isMoreOpen, setMoreOpen] = useState([]);
+  const [isIntroMoreOpen, setIntroMoreOpen] = useState(false);
+  const [deleteItem, setDeleteItem] = useState("");
 
   useEffect(() => searchParams.has("category") && setCategory(categoryParam), [categoryParam, searchParams]);
 
@@ -59,24 +62,71 @@ export default function Modify() {
       setDeleting(true);
       toast.dismiss();
       toast.loading("선택한 아이템을 삭제 중입니다.");
-      try {
-        for(let checkItem of checkItems) {
-          await deleteData(checkItem);
+      if(deleteItem === "") {
+        try {
+          for(let checkItem of checkItems) {
+            await deleteData(checkItem);
+          }
+          setDeleting(false);
+          toast.dismiss();
+          toast.success("삭제를 완료했습니다.");
+          loadItems();
+        } catch (error) {
+          setDeleting(false);
+          toast.dismiss();
+          toast.error("예기치 못한 이유로 삭제를 실패했습니다.");
         }
-        setDeleting(false);
-        toast.dismiss();
-        toast.success("삭제를 완료했습니다.");
-        loadItems();
-      } catch (error) {
-        setDeleting(false);
-        toast.dismiss();
-        toast.error("예기치 못한 이유로 삭제를 실패했습니다.");
+      } else {
+        try {
+          await deleteData(deleteItem);
+          setDeleting(false);
+          setDeleteItem("");
+          toast.dismiss();
+          toast.success("삭제를 완료했습니다.");
+          loadItems();
+        } catch (error) {
+          setDeleting(false);
+          setDeleteItem("");
+          toast.dismiss();
+          toast.error("예기치 못한 이유로 삭제를 실패했습니다.");
+        }
       }
     }
+  };
+
+  // 더보기 열기/닫기
+  const resetMoreOpen = useCallback(() => {
+    let moreOpenArr = [];
+    if(paintings.length > 0) {
+      paintings.forEach(el => moreOpenArr.push({id: el.id, open: false}));
+      setMoreOpen(moreOpenArr);
+    }
+  }, [paintings]);
+  useEffect(() => {
+    resetMoreOpen();
+  }, [paintings, resetMoreOpen]);
+  const handleMoreOpen = (e, id) => {
+    e.stopPropagation();
+    let moreOpenArr = [];
+    if(isMoreOpen.find(el => el.id === id).open === false) {
+      paintings.forEach(el => {
+        if(el.id === id) {
+          moreOpenArr.push({id: el.id, open: true});
+        } else {
+          moreOpenArr.push({id: el.id, open: false});
+        }
+      });
+    } else {
+      paintings.forEach(el => moreOpenArr.push({id: el.id, open: false}));
+    }
+    setMoreOpen(moreOpenArr);
   }
 
   return (
-    <main>
+    <main onClick={() => {
+      setIntroMoreOpen(false);
+      resetMoreOpen();
+    }}>
       <AdminBar onSubmit={onSubmit} />
       {category === "painting" && !loading && (
         <div className="modify-container">
@@ -123,8 +173,24 @@ export default function Modify() {
                   </div>
                 </div>
                 <div className="icon-wrapper">
-                  <img src="/images/icon-more.svg" alt="more" />
+                  <img src="/images/icon-more.svg" alt="more" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIntroMoreOpen(prev => !prev);
+                    }}
+                  />
                 </div>
+                {isIntroMoreOpen && (
+                  <ul className="more-wrapper">
+                    <li className="more-item">텍스트 수정하기</li>
+                    <li className="more-item delete"
+                      onClick={() => {
+                        setConfirmedDelete(true);
+                        setDeleteItem("intro");
+                      }}
+                    >삭제하기</li>
+                  </ul>
+                )}
               </div>
             )}
           </div>
@@ -150,8 +216,21 @@ export default function Modify() {
                   </div>
                 </div>
                 <div className="icon-wrapper">
-                  <img src="/images/icon-more.svg" alt="more" />
+                  <img src="/images/icon-more.svg" alt="more" 
+                    onClick={(e) => handleMoreOpen(e, painting.id)}
+                  />
                 </div>
+                {isMoreOpen.length > 0 && isMoreOpen.find(el => el.id === painting.id).open && (
+                  <ul className="more-wrapper">
+                    <li className="more-item">텍스트 수정하기</li>
+                    <li className="more-item delete"
+                      onClick={() => {
+                        setConfirmedDelete(true);
+                        setDeleteItem(`paintings/${painting.id}`);
+                      }}
+                    >삭제하기</li>
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
@@ -216,7 +295,10 @@ export default function Modify() {
           title="삭제 확인"
           description="선택한 항목을 정말로 삭제하시겠습니까?"
           twoButton={true}
-          onCancel={() => setConfirmedDelete(false)}
+          onCancel={() => {
+            setConfirmedDelete(false)
+            deleteItem !== "" && setDeleteItem("");
+          }}
           onConfirm={() => onDelete()}
         />
       )}

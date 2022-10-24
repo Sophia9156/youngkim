@@ -56,6 +56,7 @@
   width: 966px;
   border: 1px solid $lightGrey;
   margin-bottom: 25px;
+  position: relative;
   &.no-margin{
     margin-bottom: 0;
   }
@@ -123,6 +124,30 @@
     &:hover{
       img{
         filter: brightness(0.5);
+      }
+    }
+  }
+  .more-wrapper{
+    position: absolute;
+    right: -38px; top: 54px;
+    width: 140px;
+    background-color: #fff;
+    .more-item{
+      width: 100%;
+      padding: 12px 0;
+      text-align: center;
+      border: 1px solid $grey;
+      border-bottom: none;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 16px;
+      color: $grey;
+      cursor: pointer;
+      &:last-child{
+        border-bottom: 1px solid $grey;
+      }
+      &.delete{
+        color: $notice;
       }
     }
   }
