@@ -45,7 +45,7 @@ function* drawingsListCallWorker () {
 function* contactListCallWorker () {
   try {
     const contact = yield call(() => getData("/contact"));
-    yield put(actionTypes.contactSuccess({contact}));
+    yield put(actionTypes.contactSuccess({contact: contact === null ? {} : contact}));
   } catch (error) {
     yield put(actionTypes.contactFailure(error));
   }

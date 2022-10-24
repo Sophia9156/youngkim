@@ -2,7 +2,9 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import "./style/adminbar.scss";
 import Button from "components/items/Button";
 
-export default function AdminBar({onSubmit, isUploading}) {
+export default function AdminBar({
+  onSubmit,
+}) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -32,19 +34,11 @@ export default function AdminBar({onSubmit, isUploading}) {
             onClick={() => navigate("/admin-home")}
           >취소</Button>
         </li>
-        {pathname === "/admin-upload" ? (
-          <li className="admin-bar-btn-item">
-            <Button type="button" color="grey"
-              onClick={() => isUploading === false && onSubmit()}
-            >업로드</Button>
-          </li>
-        ) : (
-          <li className="admin-bar-btn-item">
-            <Button type="button" color="grey"
-              onClick={() => isUploading === false && onSubmit()}
-            >선택삭제</Button>
-          </li>
-        )}
+        <li className="admin-bar-btn-item">
+          <Button type="button" color="grey"
+            onClick={onSubmit}
+          >{pathname === "/admin-upload" ? "업로드" : "선택삭제"}</Button>
+        </li>
       </ul>
     </div>
   )

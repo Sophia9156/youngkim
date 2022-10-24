@@ -28,7 +28,7 @@ export default function Upload() {
       image: "",
     },
     validationSchema: Yup.object({
-      title: category === "painting" ? Yup.string().max(255).required("필수 항목입니다.") : Yup.string().max(255),
+      title: category === "painting" && !isIntro ? Yup.string().max(255).required("필수 항목입니다.") : Yup.string().max(255),
       description: Yup.string(),
       image: Yup.string(),
     }),
@@ -151,38 +151,40 @@ export default function Upload() {
   const fileChange = (file) => setFile(file);
 
   const onSubmit = () => {
-    if (category === "painting") {
-      if (isIntro) {
-        if (formik.values.title === "" && formik.values.description === "" && formik.values.image === "") {
-          toast.dismiss();
-          toast.error("내용을 입력해주세요.");
+    if (isUploading === false) {
+      if (category === "painting") {
+        if (isIntro) {
+          if (formik.values.title === "" && formik.values.description === "" && formik.values.image === "") {
+            toast.dismiss();
+            toast.error("내용을 입력해주세요.");
+          } else {
+            formik.handleSubmit();
+          }
         } else {
-          formik.handleSubmit();
+          if (formik.values.title === "") {
+            toast.dismiss();
+            toast.error("제목을 입력해주세요.");
+          } else if (file === null) {
+            toast.dismiss();
+            toast.error("이미지를 업로드해주세요.");
+          } else {
+            formik.handleSubmit();
+          }
         }
       } else {
-        if (formik.values.title === "") {
-          toast.dismiss();
-          toast.error("제목을 입력해주세요.");
-        } else if (file === null) {
+        if (file === null) {
           toast.dismiss();
           toast.error("이미지를 업로드해주세요.");
         } else {
           formik.handleSubmit();
         }
       }
-    } else {
-      if (file === null) {
-        toast.dismiss();
-        toast.error("이미지를 업로드해주세요.");
-      } else {
-        formik.handleSubmit();
-      }
     }
   }
 
   return (
     <main>
-      <AdminBar onSubmit={onSubmit} isUploading={isUploading} />
+      <AdminBar onSubmit={onSubmit} />
       <div className="upload-container">
         <div className="upload-image-container">
           <DragDropFileUploader id="painting" fileTypes={["JPG", "JPEG", "PNG", "GIF"]} 

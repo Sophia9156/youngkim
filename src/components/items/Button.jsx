@@ -35,10 +35,13 @@ const StyledButton = styled.button`
     width: 100px;
   `}
   ${props => props.size === "big" && css`
-    width 264px;
+    width: 264px;
     padding: 16px;
     font-size: 24px;
     line-height: 30px;
+  `}
+  ${props => props.size === "fullWidth" && css`
+    width: 100%;
   `}
   ${props => props.color === "black" && css`
     background-color: ${({theme}) => theme.color.black};
