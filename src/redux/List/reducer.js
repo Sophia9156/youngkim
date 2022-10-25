@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   intro: {},
   paintings: [],
+  painting: {},
   drawings: [],
   photographs: [],
   contact: {},
@@ -33,6 +34,26 @@ export default function list(state = initialState, action) {
         loading: false,
         intro: state.intro,
         paintings: state.paintings,
+        error: action.error,
+      }
+    case actionTypes.PAINTING_INIT:
+      return {
+        ...state,
+        loading: true,
+        painting: {},
+        error: null,
+      }
+    case actionTypes.PAINTING_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        painting: action.payload.painting,
+      }
+    case actionTypes.PAINTING_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        painting: state.painting,
         error: action.error,
       }
     case actionTypes.PHOTO_LIST_INIT:

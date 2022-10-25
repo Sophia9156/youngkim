@@ -16,6 +16,20 @@ function* paintingsListCallWorker () {
   }
 }
 
+function* paintingCallWorker ({payload}) {
+  try {
+    let painting;
+    if (payload.id === "intro") {
+      painting = yield call(() => getData('/intro'));
+    } else {
+      painting = yield call(() => getData(`/paintings/${payload.id}`));
+    }
+    yield put(actionTypes.paintingSuccess({painting: painting === null ? {} : painting}));
+  } catch (error) {
+    yield put(actionTypes.paintingFailure(error));
+  }
+}
+
 function* photoListCallWorker () {
   try {
     const photos = yield call(() => getData("/photographs"));
@@ -54,6 +68,7 @@ function* contactListCallWorker () {
 export function* getListSaga() {
   yield all([
     takeLatest(actionTypes.PAINTINGS_LIST_INIT, paintingsListCallWorker),
+    takeLatest(actionTypes.PAINTING_INIT, paintingCallWorker),
     takeLatest(actionTypes.PHOTO_LIST_INIT, photoListCallWorker),
     takeLatest(actionTypes.DRAWINGS_LIST_INIT, drawingsListCallWorker),
     takeLatest(actionTypes.CONTACT_INIT, contactListCallWorker),

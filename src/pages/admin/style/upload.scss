@@ -29,5 +29,12 @@
         height: calc(100% - 48px - 76px);
       }
     }
+    &.no-intro{
+      .upload-form-item{
+        &.description{
+          height: calc(100% - 76px);
+        }
+      }
+    }
   }
 }

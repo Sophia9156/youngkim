@@ -20,6 +20,29 @@ export function paintingsListFailure(error) {
   }
 }
 
+export const PAINTING_INIT = 'PAINTING_INIT';
+export const PAINTING_SUCCESS = 'PAINTING_SUCCESS';
+export const PAINTING_FAILURE = 'PAINTING_FAILURE';
+
+export function paintingInit(payload) {
+  return {
+    type: PAINTING_INIT,
+    payload
+  }
+}
+export function paintingSuccess(payload) {
+  return {
+    type: PAINTING_SUCCESS,
+    payload
+  }
+}
+export function paintingFailure(error) {
+  return {
+    type: PAINTING_FAILURE,
+    error
+  }
+}
+
 export const PHOTO_LIST_INIT = 'PHOTO_LIST_INIT';
 export const PHOTO_LIST_SUCCESS = 'PHOTO_LIST_SUCCESS';
 export const PHOTO_LIST_FAILURE = 'PHOTO_LIST_FAILURE';

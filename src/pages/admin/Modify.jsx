@@ -182,7 +182,9 @@ export default function Modify() {
                 </div>
                 {isIntroMoreOpen && (
                   <ul className="more-wrapper">
-                    <li className="more-item">텍스트 수정하기</li>
+                    <li className="more-item"
+                      onClick={() => navigate('/admin-modify/intro')}
+                    >텍스트 수정하기</li>
                     <li className="more-item delete"
                       onClick={() => {
                         setConfirmedDelete(true);
@@ -222,7 +224,9 @@ export default function Modify() {
                 </div>
                 {isMoreOpen.length > 0 && isMoreOpen.find(el => el.id === painting.id).open && (
                   <ul className="more-wrapper">
-                    <li className="more-item">텍스트 수정하기</li>
+                    <li className="more-item"
+                      onClick={() => navigate(`/admin-modify/${painting.id}`)}
+                    >텍스트 수정하기</li>
                     <li className="more-item delete"
                       onClick={() => {
                         setConfirmedDelete(true);
@@ -267,14 +271,26 @@ export default function Modify() {
       {category === "contact" && !loading && (
         <div className="modify-container grid">
           {contact.image !== undefined && contact.image !== null ? (
-            <div key="contact" className="modify-item-grid">
-              <img src={contact.image} alt="drawing" />
-              <div className="checkbox-wrapper">
-                <Checkbox id="contact"
-                  onChange={() => handleCheck("contact")}
-                />
+            <>
+              <div key="contact" className="modify-item-grid">
+                <img src={contact.image} alt="drawing" />
+                <div className="checkbox-wrapper">
+                  <Checkbox id="contact"
+                    onChange={() => handleCheck("contact")}
+                  />
+                </div>
               </div>
-            </div>
+              <div key="add" className="modify-item-grid no-line center">
+                <Button type="button"
+                  onClick={() => navigate({
+                    pathname: "/admin-upload",
+                    search: createSearchParams({
+                      category: "contact"
+                    }).toString()
+                  })}
+                >수정하기</Button>
+              </div>
+            </>
           ) : (
             <div className="no-item">
               <p className="no-item-title">contact 없음</p>

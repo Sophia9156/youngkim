@@ -44,7 +44,7 @@ export default function DragDropFileUploader({
               ) : (
                 <div className='default-wrap'>
                   <img id='upload-icon' src="images/icon-add-img.svg" alt="upload" />
-                  <span>이미지 올리기</span>
+                  <span>{disabled ? "이미지 수정불가" : "이미지 올리기"}</span>
                 </div>
               )}
             </>
@@ -60,6 +60,9 @@ export default function DragDropFileUploader({
 const Container = styled.div`
   width: 288px;
   height: 100%;
+  .is-disabled{
+    border: none;
+  }
 `;
 
 const DisplayContainer = styled.div`
