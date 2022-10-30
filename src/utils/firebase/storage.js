@@ -1,4 +1,4 @@
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Storage } from "./firebase";
 
 export const uploadToStorage = (pathname, file) => {
@@ -29,5 +29,19 @@ export const uploadToStorage = (pathname, file) => {
         });
       }
     );
+  })
+}
+
+export const deleteToStorage = (pathname) => {
+  return new Promise((resolve, reject) => {
+    const desertRef = ref(Storage, pathname);
+
+    deleteObject(desertRef)
+    .then(() => {
+      resolve("success");
+    })
+    .catch((error) => {
+      reject(new Error(`deleteToStorage is failed: ${error}`));
+    });
   })
 }

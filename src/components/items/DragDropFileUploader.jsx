@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { FileUploader } from "react-drag-drop-files";
 import { useState } from 'react';
+import toast from "react-hot-toast";
 
 const getBase64 = (fileObj) => {
   return new Promise((resolve, reject) => {
@@ -36,7 +37,14 @@ export default function DragDropFileUploader({
         disabled={disabled ? disabled : false}
         handleChange={handleChange}
       >
-        <DisplayContainer>
+        <DisplayContainer
+          onClick={() => {
+            if (disabled) {
+              toast.dismiss();
+              toast.error("이미지 수정이 불가합니다.");
+            }
+          }}
+        >
           {file === null ? (
             <>
               {defaultFile ? (

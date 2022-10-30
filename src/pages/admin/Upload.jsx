@@ -45,17 +45,19 @@ export default function Upload() {
               if(file !== null) {
                 const imageURL = await uploadToStorage(`intro/${file.name}`, file);
                 await writeData('intro/', {
-                  id: timestamp,
+                  id: "intro",
                   title: values["title"],
                   description: values["description"],
-                  image: imageURL
+                  image: imageURL,
+                  imagePath: `intro/${file.name}`
                 });
               } else {
                 await writeData('intro/', {
-                  id: timestamp,
+                  id: "intro",
                   title: values["title"],
                   description: values["description"],
-                  image: ""
+                  image: "",
+                  imagePath: ""
                 });
               }
               toast.dismiss();
@@ -75,7 +77,8 @@ export default function Upload() {
                 id: timestamp,
                 title: values["title"],
                 description: values["description"],
-                image: imageURL
+                image: imageURL,
+                imagePath: `paintings/${timestamp}/${file.name}`
               });
               toast.dismiss();
               toast.success("업로드를 성공적으로 마쳤습니다.");
@@ -94,7 +97,8 @@ export default function Upload() {
             const imageURL = await uploadToStorage(`photographs/${timestamp}/${file.name}`, file);
             await writeData('photographs/' + timestamp, {
               id: timestamp,
-              image: imageURL
+              image: imageURL,
+              imagePath: `photographs/${timestamp}/${file.name}`
             });
             toast.dismiss();
             toast.success("업로드를 성공적으로 마쳤습니다.");
@@ -112,7 +116,8 @@ export default function Upload() {
             const imageURL = await uploadToStorage(`drawings/${timestamp}/${file.name}`, file);
             await writeData('drawings/' + timestamp, {
               id: timestamp,
-              image: imageURL
+              image: imageURL,
+              imagePath: `drawings/${timestamp}/${file.name}`
             });
             toast.dismiss();
             toast.success("업로드를 성공적으로 마쳤습니다.");
@@ -130,7 +135,8 @@ export default function Upload() {
             const imageURL = await uploadToStorage(`contact/${file.name}`, file);
             await writeData('contact/', {
               id: timestamp,
-              image: imageURL
+              image: imageURL,
+              imagePath: `contact/${file.name}`
             });
             toast.dismiss();
             toast.success("업로드를 성공적으로 마쳤습니다.");
@@ -143,7 +149,7 @@ export default function Upload() {
             setUploading(false);
           }
           break;
-        default: console.log("No Category");
+        default: return;
       }
     }
   });
@@ -187,7 +193,7 @@ export default function Upload() {
       <AdminBar onSubmit={onSubmit} />
       <div className="upload-container">
         <div className="upload-image-container">
-          <DragDropFileUploader id="painting" fileTypes={["JPG", "JPEG", "PNG", "GIF"]} 
+          <DragDropFileUploader id="image" fileTypes={["JPG", "JPEG", "PNG", "GIF"]} 
             onChange={fileChange}
           />
         </div>

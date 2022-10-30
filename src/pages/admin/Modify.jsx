@@ -9,6 +9,7 @@ import Checkbox from "components/items/Checkbox";
 import Button from "components/items/Button";
 import Modal from "components/items/Modal";
 import { deleteData } from "utils/firebase/database";
+import { deleteToStorage } from "utils/firebase/storage";
 
 export default function Modify() {
   const navigate = useNavigate();
@@ -65,7 +66,12 @@ export default function Modify() {
       if(deleteItem === "") {
         try {
           for(let checkItem of checkItems) {
-            await deleteData(checkItem);
+            await deleteData(checkItem.db);
+            if (checkItem.db === "intro") {
+              if (intro.image !== null && intro.image !== undefined && intro.image !== "") await deleteToStorage(checkItem.storage);
+            } else {
+              await deleteToStorage(checkItem.storage);
+            }
           }
           setDeleting(false);
           toast.dismiss();
@@ -78,7 +84,12 @@ export default function Modify() {
         }
       } else {
         try {
-          await deleteData(deleteItem);
+          await deleteData(deleteItem.db);
+          if (deleteItem.db === "intro") {
+            if (intro.image !== null && intro.image !== undefined && intro.image !== "") await deleteToStorage(deleteItem.storage);
+          } else {
+            await deleteToStorage(deleteItem.storage);
+          }
           setDeleting(false);
           setDeleteItem("");
           toast.dismiss();
@@ -150,7 +161,7 @@ export default function Modify() {
               <div className="modify-item-list no-margin">
                 <div className="checkbox-wrapper">
                   <Checkbox id="intro" 
-                    onChange={(e) => handleCheck("intro")}
+                    onChange={(e) => handleCheck({db: "intro", storage: intro.imagePath})}
                   />
                 </div>
                 <div className="image-wrapper">
@@ -188,7 +199,7 @@ export default function Modify() {
                     <li className="more-item delete"
                       onClick={() => {
                         setConfirmedDelete(true);
-                        setDeleteItem("intro");
+                        setDeleteItem({db: "intro", storage: intro.imagePath});
                       }}
                     >삭제하기</li>
                   </ul>
@@ -197,11 +208,11 @@ export default function Modify() {
             )}
           </div>
           <ul className="paintings-container">
-            {paintings.length > 0 && paintings.map(painting => (
+            {paintings.length > 0 ? paintings.map(painting => (
               <li key={painting.id} className="modify-item-list">
                 <div className="checkbox-wrapper">
                   <Checkbox id={painting.id} 
-                    onChange={() => handleCheck(`paintings/${painting.id}`)}
+                    onChange={() => handleCheck({db: `paintings/${painting.id}`, storage: painting.imagePath})}
                   />
                 </div>
                 <div className="image-wrapper">
@@ -222,7 +233,7 @@ export default function Modify() {
                     onClick={(e) => handleMoreOpen(e, painting.id)}
                   />
                 </div>
-                {isMoreOpen.length > 0 && isMoreOpen.find(el => el.id === painting.id).open && (
+                {isMoreOpen.length > 0 && isMoreOpen.find(el => el.id === painting.id)?.open && (
                   <ul className="more-wrapper">
                     <li className="more-item"
                       onClick={() => navigate(`/admin-modify/${painting.id}`)}
@@ -230,42 +241,78 @@ export default function Modify() {
                     <li className="more-item delete"
                       onClick={() => {
                         setConfirmedDelete(true);
-                        setDeleteItem(`paintings/${painting.id}`);
+                        setDeleteItem({db: `paintings/${painting.id}`, storage: painting.imagePath});
                       }}
                     >삭제하기</li>
                   </ul>
                 )}
               </li>
-            ))}
+            )) : (
+              <li className="no-item">
+                <p className="no-item-title">painting 없음</p>
+                <Button type="button" color="black"
+                  onClick={() => navigate({
+                    pathname: "/admin-upload",
+                    search: createSearchParams({
+                      category: "painting"
+                    }).toString()
+                  })}
+                >upload</Button>
+              </li>
+            )}
           </ul>
         </div>
       )}
       {category === "photograph" && !loading && (
         <ul className="modify-container grid">
-          {photographs.length > 0 && photographs.map(photo => (
+          {photographs.length > 0 ? photographs.map(photo => (
             <li key={photo.id} className="modify-item-grid">
               <img src={photo.image} alt="photograph" />
               <div className="checkbox-wrapper">
                 <Checkbox id={photo.id} 
-                  onChange={() => handleCheck(`photographs/${photo.id}`)}
+                  onChange={() => handleCheck({db: `photographs/${photo.id}`, storage: photo.imagePath})}
                 />
               </div>
             </li>
-          ))}
+          )) : (
+            <li className="no-item">
+              <p className="no-item-title">photograph 없음</p>
+              <Button type="button" color="black"
+                onClick={() => navigate({
+                  pathname: "/admin-upload",
+                  search: createSearchParams({
+                    category: "photograph"
+                  }).toString()
+                })}
+              >upload</Button>
+            </li>
+          )}
         </ul>
       )}
       {category === "drawing" && !loading && (
         <ul className="modify-container grid">
-          {drawings.length > 0 && drawings.map(drawing => (
+          {drawings.length > 0 ? drawings.map(drawing => (
             <li key={drawing.id} className="modify-item-grid">
               <img src={drawing.image} alt="drawing" />
               <div className="checkbox-wrapper">
                 <Checkbox id={drawing.id} 
-                  onChange={() => handleCheck(`drawings/${drawing.id}`)}
+                  onChange={() => handleCheck({db: `drawings/${drawing.id}`, storage: drawing.imagePath})}
                 />
               </div>
             </li>
-          ))}
+          )) : (
+            <li className="no-item">
+              <p className="no-item-title">drawing 없음</p>
+              <Button type="button" color="black"
+                onClick={() => navigate({
+                  pathname: "/admin-upload",
+                  search: createSearchParams({
+                    category: "drawing"
+                  }).toString()
+                })}
+              >upload</Button>
+            </li>
+          )}
         </ul>
       )}
       {category === "contact" && !loading && (
@@ -276,7 +323,7 @@ export default function Modify() {
                 <img src={contact.image} alt="drawing" />
                 <div className="checkbox-wrapper">
                   <Checkbox id="contact"
-                    onChange={() => handleCheck("contact")}
+                    onChange={() => handleCheck({db: "contact", storage: contact.imagePath})}
                   />
                 </div>
               </div>
