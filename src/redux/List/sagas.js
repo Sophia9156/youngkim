@@ -6,13 +6,23 @@ function* paintingsListCallWorker () {
   try {
     const intro = yield call(() => getData("/intro"));
     const paintings = yield call(() => getData("/paintings"));
+    const paintingsOrder = yield call(() => getData("/paintingsOrder"));
     let arr = [];
     for (const item in paintings) {
       arr.push(paintings[item]);
     }
-    yield put(actionTypes.paintingsListSuccess({intro: intro === null ? {} : intro, paintings: arr.reverse()}));
+    yield put(actionTypes.paintingsListSuccess({intro: intro === null ? {} : intro, paintings: arr, paintingsOrder}));
   } catch (error) {
     yield put(actionTypes.paintingsListFailure(error));
+  }
+}
+
+function* paintingsOrderCallWorker () {
+  try {
+    const order = yield call(() => getData("/paintingsOrder"));
+    yield put(actionTypes.paintingsOrderSuccess({paintingsOrder: (order === null || order === undefined) ? [] : order}));
+  } catch (error) {
+    yield put(actionTypes.paintingsOrderFailure(error));
   }
 }
 
@@ -68,6 +78,7 @@ function* contactListCallWorker () {
 export function* getListSaga() {
   yield all([
     takeLatest(actionTypes.PAINTINGS_LIST_INIT, paintingsListCallWorker),
+    takeLatest(actionTypes.PAINTINGS_ORDER_INIT, paintingsOrderCallWorker),
     takeLatest(actionTypes.PAINTING_INIT, paintingCallWorker),
     takeLatest(actionTypes.PHOTO_LIST_INIT, photoListCallWorker),
     takeLatest(actionTypes.DRAWINGS_LIST_INIT, drawingsListCallWorker),

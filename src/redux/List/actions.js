@@ -20,6 +20,27 @@ export function paintingsListFailure(error) {
   }
 }
 
+export const PAINTINGS_ORDER_INIT = 'PAINTINGS_ORDER_INIT';
+export const PAINTINGS_ORDER_SUCCESS = 'PAINTINGS_ORDER_SUCCESS';
+export const PAINTINGS_ORDER_FAILURE = 'PAINTINGS_ORDER_FAILURE';
+
+export function paintingsOrderInit() {
+  return {
+    type: PAINTINGS_ORDER_INIT,
+  }
+}
+export function paintingsOrderSuccess(payload) {
+  return {
+    type: PAINTINGS_ORDER_SUCCESS,
+    payload
+  }
+}
+export function paintingsOrderFailure(error) {
+  return {
+    type: PAINTINGS_ORDER_FAILURE,
+  }
+}
+
 export const PAINTING_INIT = 'PAINTING_INIT';
 export const PAINTING_SUCCESS = 'PAINTING_SUCCESS';
 export const PAINTING_FAILURE = 'PAINTING_FAILURE';

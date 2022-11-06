@@ -1,25 +1,33 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "./style/upload.scss";
-import AdminBar from "components/layout/admin-bar/AdminBar";
-import Checkbox from "components/items/Checkbox";
-import DragDropFileUploader from "components/items/DragDropFileUploader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { uploadToStorage } from "utils/firebase/storage";
 import { writeData } from "utils/firebase/database";
+import { useDispatch, useSelector } from "react-redux";
+import { paintingsOrderInit } from "redux/List";
+import AdminBar from "components/layout/admin-bar/AdminBar";
+import Checkbox from "components/items/Checkbox";
+import DragDropFileUploader from "components/items/DragDropFileUploader";
 
 export default function Upload() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get("category");
+  const dispatch = useDispatch();
+  const { paintingsOrder } = useSelector(state => state.list);
   const [category, setCategory] = useState("painting");
   const [file, setFile] = useState(null);
   const [isIntro, setIntro] = useState(false);
   const [isUploading, setUploading] = useState(false);
 
   useEffect(() => searchParams.has("category") && setCategory(categoryParam), [categoryParam, searchParams]);
+
+  useEffect(() => {
+    dispatch(paintingsOrderInit());
+  }, [dispatch]);
 
   const formik = useFormik({
     initialValues: {
@@ -73,13 +81,18 @@ export default function Upload() {
           } else {
             try {
               const imageURL = await uploadToStorage(`paintings/${timestamp}/${file.name}`, file);
-              await writeData('paintings/' + timestamp, {
+              await writeData("paintings/" + timestamp, {
                 id: timestamp,
                 title: values["title"],
                 description: values["description"],
                 image: imageURL,
                 imagePath: `paintings/${timestamp}/${file.name}`
               });
+              if (paintingsOrder.length === 0) {
+                await writeData("paintingsOrder", [timestamp]);
+              } else {
+                await writeData("paintingsOrder", [timestamp, ...paintingsOrder]);
+              }
               toast.dismiss();
               toast.success("업로드를 성공적으로 마쳤습니다.");
               navigate("/admin-home");

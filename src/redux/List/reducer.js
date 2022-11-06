@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   intro: {},
   paintings: [],
+  paintingsOrder: [],
   painting: {},
   drawings: [],
   photographs: [],
@@ -19,6 +20,7 @@ export default function list(state = initialState, action) {
         loading: true,
         intro: {},
         paintings: [],
+        paintingsOrder: [],
         error: null,
       }
     case actionTypes.PAINTINGS_LIST_SUCCESS:
@@ -27,6 +29,7 @@ export default function list(state = initialState, action) {
         loading: false,
         intro: action.payload.intro,
         paintings: action.payload.paintings,
+        paintingsOrder: action.payload.paintingsOrder,
       }
     case actionTypes.PAINTINGS_LIST_FAILURE:
       return {
@@ -34,6 +37,27 @@ export default function list(state = initialState, action) {
         loading: false,
         intro: state.intro,
         paintings: state.paintings,
+        paintingsOrder: state.paintingsOrder,
+        error: action.error,
+      }
+    case actionTypes.PAINTINGS_ORDER_INIT:
+      return {
+        ...state,
+        loading: true,
+        paintingsOrder: [],
+        error: null,
+      }
+    case actionTypes.PAINTINGS_ORDER_SUCCESS: 
+      return {
+        ...state,
+        loading: false,
+        paintingsOrder: action.payload.paintingsOrder,
+      }
+    case actionTypes.PAINTINGS_ORDER_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        paintingsOrder: state.paintingsOrder,
         error: action.error,
       }
     case actionTypes.PAINTING_INIT:

@@ -5,7 +5,7 @@ import { paintingsListInit } from "redux/List";
 
 export default function Paintings() {
   const dispatch = useDispatch();
-  const { loading, intro, paintings } = useSelector(state => state.list);
+  const { loading, intro, paintings, paintingsOrder } = useSelector(state => state.list);
   const [isCaptionOpen, setCaptionOpen] = useState([]);
   
   useEffect(() => {
@@ -75,19 +75,19 @@ export default function Paintings() {
           )}
         </div>
         <ul className="paintings-list">
-          {paintings.length > 0 && isCaptionOpen.length > 0 && paintings.map(painting => (
-            <li key={painting.id} className="paintings-list-item">
+          {paintings.length > 0 && paintingsOrder.length > 0 && isCaptionOpen.length > 0 && paintingsOrder.map(order => (
+            <li key={paintings.find(painting => painting.id === order).id} className="paintings-list-item">
               <figure className="painting-image"
-                onClick={() => handleClick(painting.id)}
+                onClick={() => handleClick(paintings.find(painting => painting.id === order).id)}
               >
-                <img src={painting.image} alt="painting" />
-                {isCaptionOpen.find(el => el.id === painting.id).isOpen && (
+                <img src={paintings.find(painting => painting.id === order).image} alt="painting" />
+                {isCaptionOpen.find(el => el.id === paintings.find(painting => painting.id === order).id).isOpen && (
                   <figcaption className="painting-caption">
-                    {painting.description}
+                    {paintings.find(painting => painting.id === order).description}
                   </figcaption>
                 )}
               </figure>
-              <h5 className="painting-title">{painting.title}</h5>
+              <h5 className="painting-title">{paintings.find(painting => painting.id === order).title}</h5>
             </li>
           ))}
         </ul>

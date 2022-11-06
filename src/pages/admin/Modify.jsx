@@ -4,17 +4,17 @@ import "./style/modify.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { contactInit, drawingsListInit, paintingsListInit, photoListInit } from "redux/List";
 import toast from "react-hot-toast";
+import { deleteData, writeData } from "utils/firebase/database";
+import { deleteToStorage } from "utils/firebase/storage";
 import AdminBar from "components/layout/admin-bar/AdminBar";
 import Checkbox from "components/items/Checkbox";
 import Button from "components/items/Button";
 import Modal from "components/items/Modal";
-import { deleteData } from "utils/firebase/database";
-import { deleteToStorage } from "utils/firebase/storage";
 
 export default function Modify() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { loading, intro, paintings, drawings, photographs, contact } = useSelector(state => state.list);
+  const { loading, intro, paintings, drawings, photographs, contact, paintingsOrder } = useSelector(state => state.list);
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get("category");
   const [category, setCategory] = useState("painting");
@@ -71,6 +71,10 @@ export default function Modify() {
               if (intro.image !== null && intro.image !== undefined && intro.image !== "") await deleteToStorage(checkItem.storage);
             } else {
               await deleteToStorage(checkItem.storage);
+              if (category === "painting") {
+                let newOrder = paintingsOrder.filter(el => el !== checkItem.id);
+                await writeData("paintings/order", newOrder);
+              }
             }
           }
           setDeleting(false);
@@ -89,6 +93,10 @@ export default function Modify() {
             if (intro.image !== null && intro.image !== undefined && intro.image !== "") await deleteToStorage(deleteItem.storage);
           } else {
             await deleteToStorage(deleteItem.storage);
+            if (category === "painting") {
+              let newOrder = paintingsOrder.filter(el => el !== deleteItem.id);
+              await writeData("paintings/order", newOrder);
+            }
           }
           setDeleting(false);
           setDeleteItem("");
@@ -208,40 +216,43 @@ export default function Modify() {
             )}
           </div>
           <ul className="paintings-container">
-            {paintings.length > 0 ? paintings.map(painting => (
-              <li key={painting.id} className="modify-item-list">
+            {paintings.length > 0 && paintingsOrder.length > 0 ? paintingsOrder.map(order => (
+              <li key={paintings.find(painting => painting.id === order).id} className="modify-item-list">
                 <div className="checkbox-wrapper">
-                  <Checkbox id={painting.id} 
-                    onChange={() => handleCheck({db: `paintings/${painting.id}`, storage: painting.imagePath})}
+                  <Checkbox id={paintings.find(painting => painting.id === order).id} 
+                    onChange={() => handleCheck({db: `paintings/${paintings.find(painting => painting.id === order).id}`, storage: paintings.find(painting => painting.id === order).imagePath, id: paintings.find(painting => painting.id === order).id})}
                   />
                 </div>
                 <div className="image-wrapper">
-                  <img src={painting.image} alt="painting" />
+                  <img src={paintings.find(painting => painting.id === order).image} alt="painting" />
                 </div>
                 <div className="content-wrapper">
                   <div className="title-wrapper">
-                    <p className="content-title">{painting.title}</p>
+                    <p className="content-title">{paintings.find(painting => painting.id === order).title}</p>
                   </div>
                   <div className="description-wrapper">
-                    {painting.description !== undefined && painting.description !== null && painting.description !== "" && (
-                      <p className="content-description">{painting.description}</p>
+                    {paintings.find(painting => painting.id === order).description !== undefined && paintings.find(painting => painting.id === order).description !== null && paintings.find(painting => painting.id === order).description !== "" && (
+                      <p className="content-description">{paintings.find(painting => painting.id === order).description}</p>
                     )}
                   </div>
                 </div>
+                <div className="reorder-btn">
+                  <img src="images/icon-reorder.svg" alt="reorder" />
+                </div>
                 <div className="icon-wrapper">
                   <img src="/images/icon-more.svg" alt="more" 
-                    onClick={(e) => handleMoreOpen(e, painting.id)}
+                    onClick={(e) => handleMoreOpen(e, paintings.find(painting => painting.id === order).id)}
                   />
                 </div>
-                {isMoreOpen.length > 0 && isMoreOpen.find(el => el.id === painting.id)?.open && (
+                {isMoreOpen.length > 0 && isMoreOpen.find(el => el.id === paintings.find(painting => painting.id === order).id)?.open && (
                   <ul className="more-wrapper">
                     <li className="more-item"
-                      onClick={() => navigate(`/admin-modify/${painting.id}`)}
+                      onClick={() => navigate(`/admin-modify/${paintings.find(painting => painting.id === order).id}`)}
                     >텍스트 수정하기</li>
                     <li className="more-item delete"
                       onClick={() => {
                         setConfirmedDelete(true);
-                        setDeleteItem({db: `paintings/${painting.id}`, storage: painting.imagePath});
+                        setDeleteItem({db: `paintings/${paintings.find(painting => painting.id === order).id}`, storage: paintings.find(painting => painting.id === order).imagePath, id: paintings.find(painting => painting.id === order).id});
                       }}
                     >삭제하기</li>
                   </ul>
