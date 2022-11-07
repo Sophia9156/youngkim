@@ -75,19 +75,19 @@ export default function Paintings() {
           )}
         </div>
         <ul className="paintings-list">
-          {paintings.length > 0 && paintingsOrder.length > 0 && isCaptionOpen.length > 0 && paintingsOrder.map(order => (
-            <li key={paintings.find(painting => painting.id === order).id} className="paintings-list-item">
+          {paintings.length > 0 && isCaptionOpen.length > 0 && paintings.map(painting => (
+            <li key={painting.id} className="paintings-list-item">
               <figure className="painting-image"
-                onClick={() => handleClick(paintings.find(painting => painting.id === order).id)}
+                onClick={() => handleClick(painting.id)}
               >
-                <img src={paintings.find(painting => painting.id === order).image} alt="painting" />
-                {isCaptionOpen.find(el => el.id === paintings.find(painting => painting.id === order).id).isOpen && (
+                <img src={painting.image} alt="painting" />
+                {isCaptionOpen.find(el => el.id === painting.id).isOpen && (
                   <figcaption className="painting-caption">
-                    {paintings.find(painting => painting.id === order).description}
+                    {painting.description}
                   </figcaption>
                 )}
               </figure>
-              <h5 className="painting-title">{paintings.find(painting => painting.id === order).title}</h5>
+              <h5 className="painting-title">{painting.title}</h5>
             </li>
           ))}
         </ul>

@@ -9,16 +9,16 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from "react-redux";
 import persistReducer, { rootSaga } from "./redux";
 import createSagaMiddleware from "redux-saga";
-import { createLogger } from "redux-logger";
+//import { createLogger } from "redux-logger";
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const logger = createLogger({});
+//const logger = createLogger({});
 const store = configureStore({
   reducer: persistReducer,
-  middleware: [sagaMiddleware, logger],
+  middleware: [sagaMiddleware],
 });
 const persistor = persistStore(store);
 

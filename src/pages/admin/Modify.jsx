@@ -73,7 +73,7 @@ export default function Modify() {
               await deleteToStorage(checkItem.storage);
               if (category === "painting") {
                 let newOrder = paintingsOrder.filter(el => el !== checkItem.id);
-                await writeData("paintings/order", newOrder);
+                await writeData("paintingsOrder", newOrder);
               }
             }
           }
@@ -95,7 +95,7 @@ export default function Modify() {
             await deleteToStorage(deleteItem.storage);
             if (category === "painting") {
               let newOrder = paintingsOrder.filter(el => el !== deleteItem.id);
-              await writeData("paintings/order", newOrder);
+              await writeData("paintingsOrder", newOrder);
             }
           }
           setDeleting(false);
@@ -216,23 +216,23 @@ export default function Modify() {
             )}
           </div>
           <ul className="paintings-container">
-            {paintings.length > 0 && paintingsOrder.length > 0 ? paintingsOrder.map(order => (
-              <li key={paintings.find(painting => painting.id === order).id} className="modify-item-list">
+            {paintings.length > 0 ? paintings.map(painting => (
+              <li key={painting.id} className="modify-item-list">
                 <div className="checkbox-wrapper">
-                  <Checkbox id={paintings.find(painting => painting.id === order).id} 
-                    onChange={() => handleCheck({db: `paintings/${paintings.find(painting => painting.id === order).id}`, storage: paintings.find(painting => painting.id === order).imagePath, id: paintings.find(painting => painting.id === order).id})}
+                  <Checkbox id={painting.id} 
+                    onChange={() => handleCheck({db: `paintings/${painting.id}`, storage: painting.imagePath, id: painting.id})}
                   />
                 </div>
                 <div className="image-wrapper">
-                  <img src={paintings.find(painting => painting.id === order).image} alt="painting" />
+                  <img src={painting.image} alt="painting" />
                 </div>
                 <div className="content-wrapper">
                   <div className="title-wrapper">
-                    <p className="content-title">{paintings.find(painting => painting.id === order).title}</p>
+                    <p className="content-title">{painting.title}</p>
                   </div>
                   <div className="description-wrapper">
-                    {paintings.find(painting => painting.id === order).description !== undefined && paintings.find(painting => painting.id === order).description !== null && paintings.find(painting => painting.id === order).description !== "" && (
-                      <p className="content-description">{paintings.find(painting => painting.id === order).description}</p>
+                    {painting.description !== undefined && painting.description !== null && painting.description !== "" && (
+                      <p className="content-description">{painting.description}</p>
                     )}
                   </div>
                 </div>
@@ -241,18 +241,18 @@ export default function Modify() {
                 </div>
                 <div className="icon-wrapper">
                   <img src="/images/icon-more.svg" alt="more" 
-                    onClick={(e) => handleMoreOpen(e, paintings.find(painting => painting.id === order).id)}
+                    onClick={(e) => handleMoreOpen(e, painting.id)}
                   />
                 </div>
-                {isMoreOpen.length > 0 && isMoreOpen.find(el => el.id === paintings.find(painting => painting.id === order).id)?.open && (
+                {isMoreOpen.length > 0 && isMoreOpen.find(el => el.id === painting.id)?.open && (
                   <ul className="more-wrapper">
                     <li className="more-item"
-                      onClick={() => navigate(`/admin-modify/${paintings.find(painting => painting.id === order).id}`)}
+                      onClick={() => navigate(`/admin-modify/${painting.id}`)}
                     >텍스트 수정하기</li>
                     <li className="more-item delete"
                       onClick={() => {
                         setConfirmedDelete(true);
-                        setDeleteItem({db: `paintings/${paintings.find(painting => painting.id === order).id}`, storage: paintings.find(painting => painting.id === order).imagePath, id: paintings.find(painting => painting.id === order).id});
+                        setDeleteItem({db: `paintings/${painting.id}`, storage: painting.imagePath, id: painting.id});
                       }}
                     >삭제하기</li>
                   </ul>

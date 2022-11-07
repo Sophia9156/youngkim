@@ -8,9 +8,9 @@ function* paintingsListCallWorker () {
     const paintings = yield call(() => getData("/paintings"));
     const paintingsOrder = yield call(() => getData("/paintingsOrder"));
     let arr = [];
-    for (const item in paintings) {
-      arr.push(paintings[item]);
-    }
+    paintingsOrder.forEach(order => {
+      arr.push(Object.values(paintings).find(el => el.id === order));
+    });
     yield put(actionTypes.paintingsListSuccess({intro: intro === null ? {} : intro, paintings: arr, paintingsOrder}));
   } catch (error) {
     yield put(actionTypes.paintingsListFailure(error));
