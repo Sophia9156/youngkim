@@ -159,27 +159,6 @@
       }
     }
   }
-  .reorder-btn{
-    position: absolute;
-    right: -32px; top: 0; bottom: 0;
-    margin: auto;
-    width: 65px;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 65px;
-    background-color: $lightGrey;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.16));
-    cursor: pointer;
-    opacity: 0;
-    transition: .4s;
-  }
-  &:hover{
-    .reorder-btn{
-      opacity: 1;
-    }
-  }
 }
 .no-item{
   width: 966px;

@@ -236,9 +236,6 @@ export default function Modify() {
                     )}
                   </div>
                 </div>
-                <div className="reorder-btn">
-                  <img src="images/icon-reorder.svg" alt="reorder" />
-                </div>
                 <div className="icon-wrapper">
                   <img src="/images/icon-more.svg" alt="more" 
                     onClick={(e) => handleMoreOpen(e, painting.id)}
