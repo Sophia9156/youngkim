@@ -1,5 +1,6 @@
 {
   "name": "youngkim",
+  "author": "Sophia Lee",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
