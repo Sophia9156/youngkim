@@ -28,7 +28,10 @@ function* paintingsListCallWorker(): any {
     const paintingsOrder = yield call(() => getData("/paintingsOrder"));
     let arr: any[] = [];
     paintingsOrder.forEach((order: React.Key) => {
-      arr.push(Object.values(paintings).find((el: any) => el.id === order));
+      const pushItem = Object.values(paintings).find(
+        (el: any) => el.id === order
+      );
+      pushItem && arr.push(pushItem);
     });
     yield put(
       paintingsListSuccess({
