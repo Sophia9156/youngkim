@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { uploadToStorage } from "utils/firebase/storage";
 import { writeData } from "utils/firebase/database";
+import { resizeFile } from "utils/common";
 import { useAppDispatch, useAppSelector } from "hooks/useStore";
 import { paintingsOrderInit } from "store/List";
 
@@ -105,7 +106,8 @@ const useUpload = () => {
       try {
         let imageURL = undefined;
         if (file !== null) {
-          imageURL = await uploadToStorage(storagePath, file);
+          const compressedFile = await resizeFile(file);
+          imageURL = await uploadToStorage(storagePath, compressedFile);
         }
         await writeData(databasePath, {
           ...data,
